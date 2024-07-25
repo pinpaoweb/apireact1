@@ -12,6 +12,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import ManageProducts from './components/ManageProducts';
 import Pedidos from './components/Pedidos';
+import ManageOrders from './components/ManageOrders'; 
 
 
 const initialProducts = [];
@@ -143,6 +144,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/manage-products" element={<PrivateRoute><ManageProducts /></PrivateRoute>} />
         <Route path="/pedidos" element={<Pedidos />} /> {/* Nueva ruta para el componente Pedidos */}
+        <Route path="/manage-orders" element={<PrivateRoute><ManageOrders /></PrivateRoute>} /> {/* Ruta GP */}
+
         
       </Routes>
 
