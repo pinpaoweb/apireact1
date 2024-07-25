@@ -13,6 +13,7 @@ import Login from './components/Login';
 import ManageProducts from './components/ManageProducts';
 import Pedidos from './components/Pedidos';
 import ManageOrders from './components/ManageOrders'; 
+import UpdateUser from './components/UpdateUser'; // Importar el componente de actualización de usuario
 
 
 const initialProducts = [];
@@ -145,7 +146,7 @@ const App = () => {
         <Route path="/manage-products" element={<PrivateRoute><ManageProducts /></PrivateRoute>} />
         <Route path="/pedidos" element={<Pedidos />} /> {/* Nueva ruta para el componente Pedidos */}
         <Route path="/manage-orders" element={<PrivateRoute><ManageOrders /></PrivateRoute>} /> {/* Ruta GP */}
-
+        <Route path="/update-user" element={<UpdateUser />} /> {/* Nueva ruta para actualizar el usuario */}
         
       </Routes>
 

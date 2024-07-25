@@ -40,7 +40,7 @@ const Header = ({ cartCount }) => {
         {user.username ? (
           <>
             <Link to="/pedidos">Mis Pedidos</Link> {/* Enlace a los pedidos */}
-            <span>Bienvenido, {user.username} ({user.role})</span>
+            <span> <Link to="/update-user">Bienvenido, {user.username} ({user.role})</Link></span>
             <Link to="/" onClick={handleLogout}>Cerrar S.</Link>
           </>
         ) : (
