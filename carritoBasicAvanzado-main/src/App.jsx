@@ -11,6 +11,7 @@ import axios from 'axios'; // Importar axios
 import Register from './components/Register';
 import Login from './components/Login';
 import ManageProducts from './components/ManageProducts';
+import Pedidos from './components/Pedidos';
 
 
 const initialProducts = [];
@@ -141,6 +142,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/manage-products" element={<PrivateRoute><ManageProducts /></PrivateRoute>} />
+        <Route path="/pedidos" element={<Pedidos />} /> {/* Nueva ruta para el componente Pedidos */}
         
       </Routes>
 
