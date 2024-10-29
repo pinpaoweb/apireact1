@@ -14,7 +14,7 @@ const app = express();
 
 // Configuración de CORS
 const corsOptions = {
-  origin: 'http://localhost:5173', // Reemplaza con el dominio de tu frontend
+  origin: process.env.FRONTEND_URL ||'http://localhost:5173', // Reemplaza con el dominio de tu frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
   allowedHeaders: ['Content-Type', 'Authorization'], // Cabeceras permitidas
   credentials: true // Habilita el manejo de cookies y otros credenciales
@@ -37,7 +37,7 @@ app.use('/api', productosRoutes); // Usar rutas de productos
 app.use('/api', pedidosRoutes);  // Usar rutas de pedidos
 
 // Configurar el puerto en el que escuchará el servidor
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 }); 
