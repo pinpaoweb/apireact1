@@ -87,10 +87,11 @@ exports.actualizarProducto = async (req, res, next) => {
 
         if (req.file) {
             nuevoProducto.imagen = req.file.filename;
+            nuevoProducto.imagen = req.file.path; // Guardar la URL de Cloudinary
         } else {
             let productoAnterior = await Producto.findById(req.params.idProducto);
-            //nuevoProducto.imagen = productoAnterior.imagen;
-            nuevoProducto.imagen = req.file.path; // Guardar la URL de Cloudinary
+            nuevoProducto.imagen = productoAnterior.imagen;
+            
         }
 
         let producto = await Producto.findOneAndUpdate({ _id: req.params.idProducto }, nuevoProducto, {
