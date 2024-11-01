@@ -92,7 +92,7 @@ const ManageProducts = () => {
               <td>${product.precio}</td>
               <td>{product.stock}</td>
               <td>
-                {product.imagen && <img src={`${import.meta.env.VITE_API_URL}/uploads/${product.imagen}`} alt={product.nombre} width="100" />}
+              {product.imagen && <img src={product.imagen} alt={product.nombre} width="50" />}
               </td>
               <td>
                 <button className="edit-button" onClick={() => handleEditProduct(product)}>Editar</button>

@@ -49,7 +49,7 @@ const Pedidos = () => {
               <h3>Productos</h3>
               {pedido.pedido.map(item => (
                 <div key={item._id} className="pedido-item">
-                  <img src={`${import.meta.env.VITE_API_URL}/uploads/${item.producto?.imagen}`} alt={item.producto?.nombre} className="product-image" />
+                  <img src={<img src={item.producto?.imagen} alt={item.producto?.nombre} className="product-image" />} alt={item.producto?.nombre} className="product-image" />
                   <div className="item-details">
                     <p><strong>Producto:</strong> {item.producto?.nombre || 'Producto eliminado'}</p>
                     <p><strong>Cantidad:</strong> {item.cantidad}</p>

@@ -2,9 +2,10 @@ const Producto = require('../models/Producto');
 const multer = require('multer');
 const shortid = require('shortid');
 const path = require('path'); // Asegúrate de importar 'path'
+const { cloudinary, storage } = require('../config/cloudinaryConfig'); // Importa la configuración de Cloudinary
 
 const configuracionMulter = {
-    storage: multer.diskStorage({
+   /* storage: multer.diskStorage({
         destination: (req, file, cb) => {
             const uploadsDir = path.join(__dirname, '../uploads'); // Usar path.join para asegurar compatibilidad SO
             cb(null, uploadsDir);
@@ -13,7 +14,9 @@ const configuracionMulter = {
             const extension = file.mimetype.split('/')[1];
             cb(null, `${shortid.generate()}.${extension}`);
         }
-    }),
+    }),*/
+
+    storage: storage, // Usar el almacenamiento de Cloudinary configurado
     fileFilter(req, file, cb) {
         if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'|| file.mimetype === 'image/webp') {
             cb(null, true);
@@ -39,7 +42,8 @@ exports.nuevoProducto = async (req, res, next) => {
 
     try {
         if (req.file) {
-            producto.imagen = req.file.filename;
+       //     producto.imagen = req.file.filename;
+       producto.imagen = req.file.path; // Guardar la URL de Cloudinary
         }
         await producto.save();
         res.json({ mensaje: 'Se agregó un nuevo producto' });
@@ -85,7 +89,8 @@ exports.actualizarProducto = async (req, res, next) => {
             nuevoProducto.imagen = req.file.filename;
         } else {
             let productoAnterior = await Producto.findById(req.params.idProducto);
-            nuevoProducto.imagen = productoAnterior.imagen;
+            //nuevoProducto.imagen = productoAnterior.imagen;
+            nuevoProducto.imagen = req.file.path; // Guardar la URL de Cloudinary
         }
 
         let producto = await Producto.findOneAndUpdate({ _id: req.params.idProducto }, nuevoProducto, {
