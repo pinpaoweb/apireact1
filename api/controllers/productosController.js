@@ -86,7 +86,7 @@ exports.actualizarProducto = async (req, res, next) => {
         let nuevoProducto = req.body;
 
         if (req.file) {
-            nuevoProducto.imagen = req.file.filename;
+            
             nuevoProducto.imagen = req.file.path; // Guardar la URL de Cloudinary
         } else {
             let productoAnterior = await Producto.findById(req.params.idProducto);
