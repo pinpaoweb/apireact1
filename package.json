@@ -1,5 +1,29 @@
 {
-  "dependencies": {
-    "cloudinary": "^2.5.1"
-  }
+  
+    "scripts": {
+  
+      
+    "cypress:open": "cypress open"
+  
+    },
+  
+    "dependencies": {
+  
+      
+    "cloudinary": "^2.5.1",
+  
+      
+    "dotenv": "^16.4.5"
+  
+    },
+  
+    "devDependencies": {
+  
+      
+    "cypress": "^13.16.0",
+  
+      
+    "install": "^0.13.0"
+  
+    }
 }
