@@ -1,0 +1,13 @@
+graph TD;
+    A[Usuario] -->|Interacción| B[Frontend (React)];
+    B -->|Solicitudes HTTP| C[Backend (Servidor)];
+    C -->|Consulta/Almacenamiento| D[MongoDB (Nube)];
+    C -->|Carga de Imágenes| E[Cloudinary];
+    C -->|Datos Locales| F[Almacenamiento Local];
+    D -->|Datos| C;
+    F -->|Datos| C;
+    E -->|Imágenes| C;
+    C -->|Respuesta| B;
+    B -->|Actualización| A;
+    A -->|Acceso| G[Aplicación en Vercel];
+    G -->|Interacción| B;

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Importar el plugin de autotable
+import JsBarcode from 'jsbarcode';
 
 const InvoicePDF = () => {
   const location = useLocation();
@@ -80,6 +81,16 @@ const InvoicePDF = () => {
     doc.text(paymentCode.toString(), valueX, yOffset);
 
     yOffset += lineSpacing + 10; // Espacio extra antes de la tabla
+
+    // Generar código de barras
+    const canvas = document.createElement('canvas');
+    JsBarcode(canvas, paymentCode.toString(), { format: 'CODE128' });
+    const barcodeDataURL = canvas.toDataURL('image/png');
+
+    // Añadir código de barras al PDF
+    doc.addImage(barcodeDataURL, 'PNG', labelX, yOffset, 50, 20);
+
+    yOffset += 30; // Espacio extra después del código de barras
 
     // Tabla de artículos
     const tableColumn = ["Producto", "Cantidad", "Precio Unitario", "Total"];
