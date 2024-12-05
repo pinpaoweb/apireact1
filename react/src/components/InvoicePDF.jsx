@@ -1,22 +1,26 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // Importar el plugin de autotable
-import JsBarcode from 'jsbarcode';
+import 'jspdf-autotable';
 
 const InvoicePDF = () => {
   const location = useLocation();
   const { name, email, address, barrio, municipio, departamento, cartItems, paymentCode } = location.state;
   const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-  const generatePDF = () => {
-    const doc = new jsPDF('p', 'mm', 'letter'); // Tamaño carta (8.5 x 11 pulgadas)
+  const generateBarcode = async (code) => {
+    const JsBarcode = (await import('jsbarcode')).default;
+    const canvas = document.createElement('canvas');
+    JsBarcode(canvas, code, { format: 'CODE128' });
+    return canvas.toDataURL('image/png');
+  };
 
-    // Añadir logotipo (asegúrate de que la imagen esté disponible en la ruta especificada)
-    const logo = '/logo.png'; // Reemplazar con la ruta de tu logotipo
+  const generatePDF = async () => {
+    const doc = new jsPDF('p', 'mm', 'letter');
+
+    const logo = '/logo.png';
     doc.addImage(logo, 'PNG', 10, 10, 50, 20);
 
-    // Encabezado
     doc.setFontSize(18);
     doc.setTextColor(40);
     doc.setFont('helvetica', 'bold');
@@ -30,7 +34,6 @@ const InvoicePDF = () => {
     doc.text('Teléfono:3012802459', 105, 40, null, null, 'center');
     doc.text('Correo: info@pinpao.co', 105, 45, null, null, 'center');
 
-    // Información del cliente
     doc.setFontSize(12);
     let yOffset = 60;
     const lineSpacing = 10;
@@ -38,7 +41,6 @@ const InvoicePDF = () => {
     const valueX = 60;
 
     doc.setTextColor(0, 0, 0);
-
     doc.setFont('helvetica', 'bold');
     doc.text('Factura para:', labelX, yOffset);
     doc.setFont('helvetica', 'normal');
@@ -80,19 +82,14 @@ const InvoicePDF = () => {
     doc.setFont('helvetica', 'normal');
     doc.text(paymentCode.toString(), valueX, yOffset);
 
-    yOffset += lineSpacing + 10; // Espacio extra antes de la tabla
+    yOffset += lineSpacing + 10;
 
-    // Generar código de barras
-    const canvas = document.createElement('canvas');
-    JsBarcode(canvas, paymentCode.toString(), { format: 'CODE128' });
-    const barcodeDataURL = canvas.toDataURL('image/png');
-
-    // Añadir código de barras al PDF
+    // Generar código de barras de forma asíncrona
+    const barcodeDataURL = await generateBarcode(paymentCode.toString());
     doc.addImage(barcodeDataURL, 'PNG', labelX, yOffset, 50, 20);
 
-    yOffset += 30; // Espacio extra después del código de barras
+    yOffset += 30;
 
-    // Tabla de artículos
     const tableColumn = ["Producto", "Cantidad", "Precio Unitario", "Total"];
     const tableRows = [];
 
@@ -112,24 +109,21 @@ const InvoicePDF = () => {
       startY: yOffset,
       theme: 'striped',
       styles: { fontSize: 10, cellPadding: 3 },
-      headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] }, // Color de fondo del encabezado
-      alternateRowStyles: { fillColor: [240, 240, 240] } // Color de fondo alternativo para las filas
+      headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
+      alternateRowStyles: { fillColor: [240, 240, 240] }
     });
 
-    // Total
     const finalY = doc.lastAutoTable.finalY + 10;
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text(`Total: $${total.toFixed(2)} USD`, labelX, finalY);
 
-    // Pie de página
     doc.setFontSize(12);
     doc.setFont('helvetica', 'italic');
-    doc.setTextColor(0, 128, 0); // Verde
+    doc.setTextColor(0, 128, 0);
     doc.text('Gracias por su compra', 105, finalY + 20, null, null, 'center');
     doc.text('Por favor, conserve esta factura para sus registros', 105, finalY + 30, null, null, 'center');
 
-    // Guardar el PDF
     doc.save('factura.pdf');
   };
 
